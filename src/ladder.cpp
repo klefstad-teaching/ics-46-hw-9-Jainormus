@@ -5,13 +5,11 @@ void error(string word1, string word2, string msg) {
     cout << msg << word1 << " " << word2 << endl; 
 }
 
-// bool edit_distance_within(const std::string& str1, const std::string& str2, int d);
-
-bool is_adjacent(const string& word1, const string& word2) {
-    int length_cmp = word1.size() - word2.size();
+int find_edit_distance(const string& word1, const string& word2) {
+        int length_cmp = word1.size() - word2.size();
     int edit_amount = 0;
     int other_index = 0;
-    for (int i = 0;; i < word1.size() && other_index < word2.size();) {
+    for (int i = 0; i < word1.size() && other_index < word2.size();) {
         if (edit_amount > 1) {return false;}
         if (word1[i] == word2[other_index]) {
             ++i;
@@ -31,7 +29,15 @@ bool is_adjacent(const string& word1, const string& word2) {
         }
     }
     edit_amount += (length_cmp > 0) ? length_cmp : length_cmp * -1;
-    return edit_amount == 1;
+    return edit_amount;
+}
+
+bool edit_distance_within(const std::string& str1, const std::string& str2, int d) {
+    return find_edit_distance(str1, str2) <= d;
+}
+
+bool is_adjacent(const string& word1, const string& word2) {
+    return find_edit_distance(word1, word2) == 1;
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
